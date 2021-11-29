@@ -6,10 +6,11 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan("com.leoita.controller")
+@ComponentScan("com.leoita.config")
 public class BankApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BankApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BankApplication.class, args);
+    }
 
 }
