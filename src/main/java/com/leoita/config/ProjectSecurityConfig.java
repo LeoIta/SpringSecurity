@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -35,6 +35,11 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
+    /*we have now 2 users in the db:
+    * 'user@example.com', and 'user@BCrypt.com'.
+    * the 1st one will not work as password is not hashed at all -> WARN 6336 --- [nio-8080-exec-6] o.s.s.c.bcrypt.BCryptPasswordEncoder     : Encoded password does not look like BCrypt
+    * 2nd will work as password is hashed and can be compared   */
+
 }
