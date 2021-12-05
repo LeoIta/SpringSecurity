@@ -37,9 +37,5 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    /*we have now 2 users in the db:
-    * 'user@example.com', and 'user@BCrypt.com'.
-    * the 1st one will not work as password is not hashed at all -> WARN 6336 --- [nio-8080-exec-6] o.s.s.c.bcrypt.BCryptPasswordEncoder     : Encoded password does not look like BCrypt
-    * 2nd will work as password is hashed and can be compared   */
 
 }
