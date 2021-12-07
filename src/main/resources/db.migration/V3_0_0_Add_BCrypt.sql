@@ -1,4 +1,3 @@
-
 use bank;
 
 ALTER TABLE customer MODIFY COLUMN pwd VARCHAR(200);

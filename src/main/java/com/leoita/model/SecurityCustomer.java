@@ -10,11 +10,11 @@ import java.util.List;
 
 public class SecurityCustomer implements UserDetails {
 
-    private static final long serialVersionUID = -6690946470872875352L;
+    private static final long serialVersionUID = -6690946490872875352L;
 
     private final Customer customer;
 
-    public SecurityCustomer(Customer customer){
+    public SecurityCustomer(Customer customer) {
         this.customer = customer;
     }
 
@@ -54,4 +54,5 @@ public class SecurityCustomer implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
