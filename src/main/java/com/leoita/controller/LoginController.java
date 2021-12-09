@@ -4,10 +4,12 @@ import com.leoita.model.Customer;
 import com.leoita.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
 
+@RestController
 public class LoginController {
 
 
@@ -17,7 +19,7 @@ public class LoginController {
     @RequestMapping("/user")
     public Customer getUserDetailsAfterLogin(Principal user) {
         List<Customer> customers = customerRepository.findByEmail(user.getName());
-        return customers.isEmpty()?null: customers.get(0);
+        return customers.isEmpty() ? null : customers.get(0);
     }
 
 }

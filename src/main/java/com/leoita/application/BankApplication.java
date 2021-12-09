@@ -1,4 +1,4 @@
-package com.leoita.springsecurityapp;
+package com.leoita.application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
