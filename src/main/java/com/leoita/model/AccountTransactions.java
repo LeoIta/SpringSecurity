@@ -23,7 +23,7 @@ public class AccountTransactions {
     private long accountNumber;
 
     @Column(name = "customer_id")
-    private int customerId;
+    private long customerId;
 
     @Column(name = "transaction_dt")
     private Date transactionDt;
@@ -44,4 +44,3 @@ public class AccountTransactions {
     private String createDt;
 
 }
-
