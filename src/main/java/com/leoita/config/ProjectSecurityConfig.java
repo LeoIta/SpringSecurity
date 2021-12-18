@@ -2,6 +2,7 @@ package com.leoita.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -40,10 +41,10 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
                 .authorizeRequests().antMatchers("/myAccount").hasRole("USER")
-                .antMatchers("/myBalance").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.POST,"/myBalance").hasAnyRole("USER","ADMIN")
                 .antMatchers("/myLoans").hasRole("ROOT")
-                .antMatchers("/myCards").authenticated()
-                .antMatchers("/notices").permitAll()
+                .mvcMatchers(HttpMethod.POST,"/myCards").authenticated()
+                .regexMatchers(HttpMethod.GET,"/notices").permitAll()
                 .antMatchers("/contact").permitAll()
                 .and().formLogin()
                 .and().httpBasic();
