@@ -1,5 +1,6 @@
 package com.leoita.config;
 
+import com.leoita.model.Authority;
 import com.leoita.model.Customer;
 import com.leoita.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class BankUsernamePwdAuthenticationProvider implements AuthenticationProvider {
@@ -34,15 +36,22 @@ public class BankUsernamePwdAuthenticationProvider implements AuthenticationProv
         List<Customer> customers = customerRepository.findByEmail(username);
         if (!customers.isEmpty()) {
             if (passwordEncoder.matches(pwd, customers.get(0).getPwd())) {
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority(customers.get(0).getRole()));
-                return new UsernamePasswordAuthenticationToken(username, pwd, authorities);
+                return new UsernamePasswordAuthenticationToken(username, pwd, getGrantedAuthorities(customers.get(0).getAuthorities()));
             } else {
                 throw new BadCredentialsException("Invalid password");
             }
         } else {
             throw new BadCredentialsException("No user registered with these details");
         }
+    }
+
+    private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {
+        List<GrantedAuthority> gratedAuthorities = new ArrayList<>();
+        for (Authority authority : authorities) {
+            gratedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
+        }
+        return gratedAuthorities;
+
     }
 
 
