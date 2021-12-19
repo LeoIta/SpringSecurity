@@ -1,6 +1,7 @@
 package com.leoita.config;
 
 import com.leoita.filter.AuthoritiesLoggingAfterFilter;
+import com.leoita.filter.AuthoritiesLoggingAtFilter;
 import com.leoita.filter.RequestValidationBeforeFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,6 +46,7 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
+                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/myAccount").hasRole("USER")
                 .antMatchers(HttpMethod.POST,"/myBalance").hasAnyRole("USER","ADMIN")
