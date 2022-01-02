@@ -8,6 +8,7 @@ import com.leoita.filter.RequestValidationBeforeFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /*
@@ -57,7 +59,7 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/myAccount").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/myBalance").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/myLoans").hasRole("ROOT")
+                .antMatchers("/myLoans").authenticated()
                 .mvcMatchers(HttpMethod.POST, "/myCards").authenticated()
                 .regexMatchers(HttpMethod.GET, "/notices").permitAll()
                 .antMatchers("/contact").permitAll()
