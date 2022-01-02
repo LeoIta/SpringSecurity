@@ -3,6 +3,7 @@ package com.leoita.controller;
 import com.leoita.model.Contact;
 import com.leoita.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,8 @@ public class ContactController {
     }
 
     @PostMapping("/contact")
+//    @PreFilter("filterObject.contactName == 'Test'")// PreFilter checks the permissions before method execution
+    @PostFilter("filterObject.contactEmail == 'test'")// PostFilter checks the permissions after method execution
     public Contact saveContactInquiryDetails(@RequestBody Contact contact) {
         contact.setContactId(getServiceReqNumber());
         contact.setCreateDt(new Date(System.currentTimeMillis()));
