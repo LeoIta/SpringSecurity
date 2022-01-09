@@ -20,12 +20,11 @@ public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "loan_number")
-    private long loanNumber;
+    private int loanNumber;
 
-    @Column(name = "customer_id")
-    private long customerId;
+    private String email;
 
-    @Column(name = "start_dt")
+    @Column(name="start_dt")
     private Date startDt;
 
     @Column(name = "loan_type")
@@ -42,5 +41,6 @@ public class Loan {
 
     @Column(name = "create_dt")
     private String createDt;
+
 
 }

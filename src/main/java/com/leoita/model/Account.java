@@ -13,12 +13,11 @@ import javax.persistence.Table;
 @Setter
 @Table(name = "accounts")
 public class Account {
-    @Column(name = "customer_id")
-    private long customerId;
-    @Column(name = "account_number")
+    @Column(name="account_number")
     @Id
     private long accountNumber;
-    @Column(name = "account_type")
+    private String email;
+    @Column(name="account_type")
     private String accountType;
     @Column(name = "branch_address")
     private String branchAddress;

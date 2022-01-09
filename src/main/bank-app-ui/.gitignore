@@ -46,4 +46,5 @@ testem.log
 Thumbs.db
 
 # Angular Files
-.angular/*
+.angular/
+.node_modules/

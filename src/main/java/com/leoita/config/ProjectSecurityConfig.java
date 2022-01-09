@@ -1,27 +1,14 @@
 package com.leoita.config;
 
-import com.leoita.filter.AuthoritiesLoggingAfterFilter;
-import com.leoita.filter.AuthoritiesLoggingAtFilter;
-import com.leoita.filter.JWTTokenGeneratorFilter;
-import com.leoita.filter.JWTTokenValidatorFilter;
-import com.leoita.filter.RequestValidationBeforeFilter;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /*
@@ -35,44 +22,39 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
 
-        http
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .cors().configurationSource(request -> {
+        http.cors().configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(Collections.singletonList("http://localhost:4200/"));
+                    config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
                     config.setAllowedMethods(Collections.singletonList("*"));
                     config.setAllowCredentials(true);
                     config.setAllowedHeaders(Collections.singletonList("*"));
-                    config.setExposedHeaders(Arrays.asList("Authorization"));
                     config.setMaxAge(3600L);
                     return config;
-                })
-                .and()
-                .csrf().disable() //with JWT it is redundant
-                .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
-                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
-                .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
-                .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
-                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
+                }).and()
                 .authorizeRequests()
-                .antMatchers("/myAccount").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/myBalance").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/myAccount").hasAnyRole("USER")
+                .antMatchers("/myBalance").hasAnyRole("ADMIN")
                 .antMatchers("/myLoans").authenticated()
-                .mvcMatchers(HttpMethod.POST, "/myCards").authenticated()
-                .regexMatchers(HttpMethod.GET, "/notices").permitAll()
+                .antMatchers("/myCards").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/notices").permitAll()
                 .antMatchers("/contact").permitAll()
                 .and()
-                .formLogin()
-                .and()
-                .httpBasic();
+                .csrf().disable()
+                .oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter);
 
-    }
+        /**
+         * This configuration is needed to view the /h2-console without any issues.
+         * Since H2 Console uses frames to display the UI, we need to allow the frames.
+         * Otherwise since by default Spring Security consider X-Frame-Options: DENY
+         * to avoid Clickjacking attacks, the /h2-console will not work properly.
+         * More details can be found at
+         * https://docs.spring.io/spring-security/site/docs/5.0.x/reference/html/headers.html#headers-frame-options
+         */
+        http.headers().frameOptions().sameOrigin();
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
 }

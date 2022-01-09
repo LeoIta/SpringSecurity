@@ -20,7 +20,7 @@ public class BalanceController {
     @PostMapping("/myBalance")
     public List<AccountTransactions> getBalanceDetails(@RequestBody Customer customer) {
         List<AccountTransactions> accountTransactions = accountTransactionsRepository.
-                findByCustomerIdOrderByTransactionDtDesc(customer.getId());
+                findByEmailOrderByTransactionDtDesc(customer.getEmail());
         return accountTransactions == null ? Collections.emptyList() : accountTransactions;
     }
 

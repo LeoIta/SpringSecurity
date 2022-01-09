@@ -33,4 +33,5 @@ build/
 .vscode/
 
 # Angular Files
-.angular/*
+.angular/
+.node_modules/

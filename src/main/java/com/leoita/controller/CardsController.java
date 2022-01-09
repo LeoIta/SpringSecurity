@@ -19,7 +19,8 @@ public class CardsController {
 
     @PostMapping("/myCards")
     public List<Card> getCardDetails(@RequestBody Customer customer) {
-        List<Card> cards = cardsRepository.findByCustomerId(customer.getId());
+        List<Card> cards = cardsRepository
+                .findByEmail(customer.getEmail());
         return cards == null ? Collections.emptyList() : cards;
     }
 

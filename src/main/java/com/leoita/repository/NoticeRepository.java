@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface NoticeRepository extends CrudRepository<Notice, Long> {
 
-    @Query(value = "from Notice n where CURDATE() BETWEEN noticeBegDt AND noticeEndDt")
+    @Query(value = "from Notice")
     List<Notice> findAllActiveNotices();
 
 }

@@ -20,10 +20,9 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "card_id")
-    private long cardId;
+    private int cardId;
 
-    @Column(name = "customer_id")
-    private long customerId;
+    private String email;
 
     @Column(name = "card_number")
     private String cardNumber;

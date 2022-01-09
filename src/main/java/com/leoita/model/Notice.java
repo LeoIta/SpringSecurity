@@ -20,7 +20,7 @@ public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "notice_id")
-    private long noticeId;
+    private int noticeId;
 
     @Column(name = "notice_summary")
     private String noticeSummary;
@@ -28,11 +28,11 @@ public class Notice {
     @Column(name = "notice_details")
     private String noticeDetails;
 
-    @Column(name = "notice_beg_dt")
-    private Date noticeBegDt;
+    @Column(name = "notic_beg_dt")
+    private Date noticBegDt;
 
-    @Column(name = "notice_end_dt")
-    private Date noticeEndDt;
+    @Column(name = "notic_end_dt")
+    private Date noticEndDt;
 
     @Column(name = "create_dt")
     private Date createDt;

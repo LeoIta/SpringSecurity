@@ -4,7 +4,6 @@ import com.leoita.model.Customer;
 import com.leoita.model.Loan;
 import com.leoita.repository.LoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +18,9 @@ public class LoansController {
     private LoanRepository loanRepository;
 
     @PostMapping("/myLoans")
-    @PostAuthorize("hasRole('ROOT')") // PostAuthorize checks the permissions after method execution
     public List<Loan> getLoanDetails(@RequestBody Customer customer) {
-        List<Loan> loans = loanRepository.findByCustomerIdOrderByStartDtDesc(customer.getId());
+        List<Loan> loans = loanRepository
+                .findByEmailOrderByStartDtDesc(customer.getEmail());
         return loans == null ? Collections.emptyList() : loans;
     }
 

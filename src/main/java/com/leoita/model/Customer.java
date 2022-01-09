@@ -6,12 +6,9 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -21,7 +18,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "customer_id")
-    private long id;
+    private int id;
     private String name;
     private String email;
     @Column(name = "mobile_number")
@@ -32,7 +29,5 @@ public class Customer {
     @Column(name = "create_dt")
     private String createDt;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
-    private Set<Authority> authorities;
+
 }

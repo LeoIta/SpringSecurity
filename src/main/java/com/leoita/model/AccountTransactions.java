@@ -19,19 +19,18 @@ public class AccountTransactions {
     @Column(name = "transaction_id")
     private String transactionId;
 
-    @Column(name = "account_number")
+    @Column(name="account_number")
     private long accountNumber;
 
-    @Column(name = "customer_id")
-    private long customerId;
+    private String email;
 
-    @Column(name = "transaction_dt")
+    @Column(name="transaction_dt")
     private Date transactionDt;
 
     @Column(name = "transaction_summary")
     private String transactionSummary;
 
-    @Column(name = "transaction_type")
+    @Column(name="transaction_type")
     private String transactionType;
 
     @Column(name = "transaction_amt")
